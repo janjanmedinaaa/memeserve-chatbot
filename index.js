@@ -21,7 +21,7 @@ const filterEntry = (entry) => {
 }
 
 // Receive messages from Messenger
-app.post('/webhook', (req, res) => {
+app.post('/webhook', async(req, res) => {
   let body = req.body;
 
   console.log('Body Object', body.object);
@@ -34,8 +34,6 @@ app.post('/webhook', (req, res) => {
       // Only get the first Message received
       let messages = entry.messaging[0];
       let filter = filterEntry(messages);
-
-      res.status(200).send('EVENT_RECEIVED');
 
       await messenger.action(filter.user, Default.SEEN);
       console.log('Seen Message');
@@ -96,6 +94,8 @@ app.post('/webhook', (req, res) => {
         default:
           jsonBox.clear(filter.user);
       }
+
+      res.status(200).send('EVENT_RECEIVED');
     });
   } else {
     res.sendStatus(403);
