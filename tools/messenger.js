@@ -21,7 +21,10 @@ const send = ({ user, type, value }) => {
       }
     })
     .then(res => res.json())
-    .then(result => resolve(result))
+    .then(result => {
+      resolve(result)
+      console.log('Send Message:', result)
+    })
   })
 }
 
@@ -35,7 +38,10 @@ const action = (user, action) => {
       }
     })
     .then(res => res.json())
-    .then(result => resolve(result))
+    .then(result => {
+      resolve(result)
+      console.log('Send Action:', result)
+    })
   })
 }
 
@@ -49,7 +55,10 @@ const url = (user, message, url) => {
       }
     })
     .then(res => res.json())
-    .then(result => resolve(result))
+    .then(result => {
+      resolve(result)
+      console.log('Send URL:', result)
+    })
   })
 }
 

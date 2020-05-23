@@ -24,6 +24,7 @@ const filterEntry = (entry) => {
 app.post('/webhook', (req, res) => {
   let body = req.body;
 
+  console.log('Body Object', body.object);
   // Checks this is an event from a page subscription
   if (body.object === 'page') {
 
@@ -37,8 +38,13 @@ app.post('/webhook', (req, res) => {
       res.status(200).send('EVENT_RECEIVED');
 
       await messenger.action(filter.user, Default.SEEN);
+      console.log('Seen Message');
+
       messenger.action(filter.user, Default.TYPING);
+      console.log('Show Typing Indicator');
+
       var jsonBoxData = await jsonBox.get(filter.user);
+      console.log('Getting current JsonBox Data:', jsonBoxData);
 
       switch (jsonBoxData.length) {
         case 0:
@@ -107,6 +113,7 @@ app.get('/webhook', (req, res) => {
 
   if (mode && token) {
     if (mode === 'subscribe' && token === VERIFY_TOKEN) {
+      console.log('Webhook Verified!');
       res.status(200).send(challenge);
     } else {
       res.sendStatus(403);
