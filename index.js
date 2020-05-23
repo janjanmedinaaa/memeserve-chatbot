@@ -72,6 +72,7 @@ app.post('/webhook', async(req, res) => {
             });
 
             var memeUrl = `${MEME_API}?image=${memeImage}&message=${memeDescription}`
+            var memeDownloadUrl = `${MEME_API}/download?image=${memeImage}&message=${memeDescription}`
 
             await messenger.action(filter.user, Default.TYPING)
             // var sendImage = await messenger.send({
@@ -83,7 +84,7 @@ app.post('/webhook', async(req, res) => {
               await messenger.url(
                 filter.user,
                 Default.ERROR_SENDING_IMAGE,
-                memeUrl
+                memeDownloadUrl
               );
             // }
           }
