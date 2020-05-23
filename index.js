@@ -74,18 +74,18 @@ app.post('/webhook', async(req, res) => {
             var memeUrl = `${MEME_API}?image=${memeImage}&message=${memeDescription}`
 
             // messenger.action(filter.user, Default.TYPING)
-            var sendImage = await messenger.send({
-              user: filter.user,
-              value: memeUrl
-            })
+            // var sendImage = await messenger.send({
+            //   user: filter.user,
+            //   value: memeUrl
+            // })
 
-            if (sendImage.error) {
+            // if (sendImage.error) {
               await messenger.url(
                 filter.user,
                 Default.ERROR_SENDING_IMAGE,
                 memeUrl
               );
-            }
+            // }
           }
           break;
         default:
