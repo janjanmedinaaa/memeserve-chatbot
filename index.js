@@ -46,9 +46,9 @@ app.post('/webhook', async(req, res) => {
 
       switch (jsonBoxData.length) {
         case 0:
-          jsonBox.save(filter);
+          await jsonBox.save(filter);
           
-          messenger.send({
+          await messenger.send({
             user: filter.user,
             type: 'text',
             value: (filter.type == 'image') ? Default.RECEIVED_IMAGE : Default.RECEIVED_MESSAGE
@@ -57,9 +57,9 @@ app.post('/webhook', async(req, res) => {
         case 1:
           await jsonBox.clear(filter.user);
           if (jsonBoxData[0].type == filter.type) {
-            jsonBox.save(filter);
+            await jsonBox.save(filter);
 
-            messenger.send({
+            await messenger.send({
               user: filter.user,
               type: 'text',
               value: (filter.type == 'image') ? Default.DUPLICATE_IMAGE : Default.DUPLICATE_MESSAGE
@@ -83,7 +83,7 @@ app.post('/webhook', async(req, res) => {
             })
 
             if (sendImage.error) {
-              messenger.url(
+              await messenger.url(
                 filter.user,
                 Default.ERROR_SENDING_IMAGE,
                 memeUrl
@@ -92,7 +92,7 @@ app.post('/webhook', async(req, res) => {
           }
           break;
         default:
-          jsonBox.clear(filter.user);
+          await jsonBox.clear(filter.user);
       }
 
       res.status(200).send('EVENT_RECEIVED');
