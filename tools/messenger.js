@@ -40,7 +40,7 @@ const action = (user, action) => {
     .then(res => res.json())
     .then(result => {
       resolve(result)
-      console.log('Send Action:', result)
+      console.log('Send Action:', result, action)
     })
   })
 }

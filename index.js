@@ -35,10 +35,10 @@ app.post('/webhook', async(req, res) => {
       let messages = entry.messaging[0];
       let filter = filterEntry(messages);
 
-      await messenger.action(filter.user, Default.SEEN);
+      messenger.action(filter.user, Default.SEEN);
       console.log('Seen Message');
 
-      await messenger.action(filter.user, Default.TYPING);
+      messenger.action(filter.user, Default.TYPING);
       console.log('Show Typing Indicator');
 
       var jsonBoxData = await jsonBox.get(filter.user);
@@ -48,7 +48,7 @@ app.post('/webhook', async(req, res) => {
         case 0:
           await jsonBox.save(filter);
           
-          await messenger.send({
+          messenger.send({
             user: filter.user,
             type: 'text',
             value: (filter.type == 'image') ? Default.RECEIVED_IMAGE : Default.RECEIVED_MESSAGE
@@ -57,7 +57,7 @@ app.post('/webhook', async(req, res) => {
         case 1:
           await jsonBox.clear(filter.user);
           if (jsonBoxData[0].type == filter.type) {
-            await jsonBox.save(filter);
+            jsonBox.save(filter);
 
             await messenger.send({
               user: filter.user,
@@ -76,7 +76,7 @@ app.post('/webhook', async(req, res) => {
 
             var memeUrl = `${MEME_API}?image=${memeImage}&message=${memeDescription}`
 
-            await messenger.action(filter.user, Default.TYPING)
+            messenger.action(filter.user, Default.TYPING)
             var sendImage = await messenger.send({
               user: filter.user,
               value: memeUrl
@@ -95,7 +95,7 @@ app.post('/webhook', async(req, res) => {
           await jsonBox.clear(filter.user);
       }
 
-      res.status(200).send('EVENT_RECEIVED');
+      return res.status(200).send('EVENT_RECEIVED');
     });
   } else {
     res.sendStatus(403);

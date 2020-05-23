@@ -9,7 +9,10 @@ const get = (user) => {
   return new Promise(resolve => {
     fetch(`${getUserUrl(user)}`)
       .then(res => res.json())
-      .then(result => resolve(result))
+      .then(result => {
+        resolve(result)
+        console.log('Getting JSONBox', user)
+      })
       .catch(() => resolve([]))
   })
 }
@@ -24,7 +27,10 @@ const save = (entry) => {
       }
     })
     .then(res => res.json())
-    .then(result => resolve(result))
+    .then(result => {
+      resolve(result)
+      console.log('Saving JSONBox', entry)
+    })
     .catch(() => resolve([]))
   })
 }
@@ -35,7 +41,10 @@ const clear = (user) => {
       method: 'delete'
     })
     .then(res => res.json())
-    .then(result => resolve(result))
+    .then(result => {
+      resolve(result)
+      console.log('Clear JSONBox', user)
+    })
     .catch(() => resolve([]))
   })
 }
