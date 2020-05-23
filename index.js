@@ -38,7 +38,7 @@ app.post('/webhook', async(req, res) => {
       await messenger.action(filter.user, Default.SEEN);
       console.log('Seen Message');
 
-      messenger.action(filter.user, Default.TYPING);
+      await messenger.action(filter.user, Default.TYPING);
       console.log('Show Typing Indicator');
 
       var jsonBoxData = await jsonBox.get(filter.user);
