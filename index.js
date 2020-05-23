@@ -35,11 +35,8 @@ app.post('/webhook', async(req, res) => {
       let messages = entry.messaging[0];
       let filter = filterEntry(messages);
 
-      messenger.action(filter.user, Default.SEEN);
-      console.log('Seen Message');
-
-      messenger.action(filter.user, Default.TYPING);
-      console.log('Show Typing Indicator');
+      // messenger.action(filter.user, Default.SEEN);
+      // messenger.action(filter.user, Default.TYPING);
 
       var jsonBoxData = await jsonBox.get(filter.user);
       console.log('Getting current JsonBox Data:', jsonBoxData);
@@ -76,7 +73,7 @@ app.post('/webhook', async(req, res) => {
 
             var memeUrl = `${MEME_API}?image=${memeImage}&message=${memeDescription}`
 
-            messenger.action(filter.user, Default.TYPING)
+            // messenger.action(filter.user, Default.TYPING)
             var sendImage = await messenger.send({
               user: filter.user,
               value: memeUrl
@@ -92,7 +89,7 @@ app.post('/webhook', async(req, res) => {
           }
           break;
         default:
-          await jsonBox.clear(filter.user);
+          jsonBox.clear(filter.user);
       }
 
       return res.status(200).send('EVENT_RECEIVED');
