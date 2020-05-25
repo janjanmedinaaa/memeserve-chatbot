@@ -20,7 +20,7 @@ const filterEntry = (entry) => {
 }
 
 // Receive messages from Messenger
-app.post('/webhook', async(req, res) => {
+app.post('/', async(req, res) => {
   let body = req.body;
 
   console.log('Body Object', body.object);
@@ -94,7 +94,7 @@ app.post('/webhook', async(req, res) => {
 });
 
 // Receive verification challenge from Facebook
-app.get('/webhook', (req, res) => {
+app.get('/', (req, res) => {
   let VERIFY_TOKEN = process.env.MESSENGER_VERIFY_TOKEN
     
   // Parse the query params
