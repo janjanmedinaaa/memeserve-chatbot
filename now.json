@@ -3,12 +3,12 @@
   "builds": [{ "src": "index.js", "use": "@now/node-server" }],
   "routes": [
     {
-      "src": "/webhook",
+      "src": "/",
       "dest": "/index.js",
       "methods": ["GET"]
     },
     {
-      "src": "/webhook",
+      "src": "/",
       "dest": "/index.js",
       "methods": ["POST"]
     }
