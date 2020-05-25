@@ -13,26 +13,26 @@ const get = (user) => {
         resolve(result)
         console.log('Getting JSONBox', user)
       })
-      .catch(() => resolve([]))
-  })
+      .catch(() => resolve([]));
+  });
 }
 
 const save = (entry) => {
   return new Promise (resolve => {
     fetch(getUserUrl(entry.user), {
       method: 'post',
-      body: JSON.stringify(entry),
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
+      body: JSON.stringify(entry)
     })
     .then(res => res.json())
     .then(result => {
       resolve(result)
       console.log('Saving JSONBox', entry)
     })
-    .catch(() => resolve([]))
-  })
+    .catch(() => resolve([]));
+  });
 }
 
 const clear = (user) => {
@@ -45,8 +45,8 @@ const clear = (user) => {
       resolve(result)
       console.log('Clear JSONBox', user)
     })
-    .catch(() => resolve([]))
-  })
+    .catch(() => resolve([]));
+  });
 }
 
 module.exports = {

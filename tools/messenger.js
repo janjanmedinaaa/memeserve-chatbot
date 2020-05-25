@@ -14,55 +14,55 @@ const send = ({ user, type, value }) => {
 
   return new Promise ((resolve, reject) => {
     fetch(sendMessageUrl, {
-      method: 'post',
-      body,
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
+      body
     })
     .then(res => res.json())
     .then(result => {
       resolve(result)
       console.log('Send Message:', result, value)
     })
-    .catch(e => reject(e))
-  })
+    .catch(e => reject(e));
+  });
 }
 
 const action = (user, action) => {
   return new Promise ((resolve, reject) => {
     fetch(sendMessageUrl, {
-      method: 'post',
-      body: JSON.stringify(format.action(user, action)),
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
+      body: JSON.stringify(format.action(user, action))
     })
     .then(res => res.json())
     .then(result => {
       resolve(result)
       console.log('Send Action:', result, action)
     })
-    .catch(e => reject(e))
-  })
+    .catch(e => reject(e));
+  });
 }
 
 const url = (user, message, url) => {
   return new Promise ((resolve, reject) => {
     fetch(sendMessageUrl, {
-      method: 'post',
-      body: JSON.stringify(format.url(user, message, url)),
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
+      body: JSON.stringify(format.url(user, message, url))
     })
     .then(res => res.json())
     .then(result => {
       resolve(result)
       console.log('Send URL:', result, message, url)
     })
-    .catch(e => reject(e))
-  })
+    .catch(e => reject(e));
+  });
 }
 
 module.exports = {

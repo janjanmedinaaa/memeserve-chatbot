@@ -6,11 +6,10 @@ require('dotenv').config();
 
 const jsonBox = require('./tools/jsonbox');
 const messenger = require('./tools/messenger');
+const github = require('./tools/github');
 const Default = require('./tools/default');
 
 const app = express().use(bodyParser.json());
-
-const MEME_API = 'http://memeserve-dev.ap-southeast-1.elasticbeanstalk.com'
 
 const filterEntry = (entry) => { 
   var user = entry.sender.id;
@@ -35,6 +34,7 @@ app.post('/webhook', async(req, res) => {
       let messages = entry.messaging[0];
       let filter = filterEntry(messages);
 
+      // Acknowledge the Message
       await messenger.action(filter.user, Default.SEEN);
       await messenger.action(filter.user, Default.TYPING);
 
@@ -62,8 +62,8 @@ app.post('/webhook', async(req, res) => {
               value: (filter.type == 'image') ? Default.DUPLICATE_IMAGE : Default.DUPLICATE_MESSAGE
             });
           } else {
-            var memeDescription = (jsonBoxData[0].type == 'text') ? jsonBoxData[0].value : filter.value;
-            var memeImage = (jsonBoxData[0].type == 'image') ? jsonBoxData[0].value : filter.value;
+            var imageSrc = (jsonBoxData[0].type == 'image') ? jsonBoxData[0].value : filter.value;
+            var imageDescription = (jsonBoxData[0].type == 'text') ? jsonBoxData[0].value : filter.value;
 
             await messenger.send({
               user: filter.user,
@@ -71,32 +71,25 @@ app.post('/webhook', async(req, res) => {
               value: Default.EDITING_MESSAGE
             });
 
-            var memeUrl = `${MEME_API}?image=${memeImage}&message=${memeDescription}`
-            var memeDownloadUrl = `${MEME_API}/download?image=${memeImage}&message=${memeDescription}`
+            await messenger.action(filter.user, Default.TYPING);
 
-            await messenger.action(filter.user, Default.TYPING)
-            var sendImage = await messenger.send({
-              user: filter.user,
-              value: memeUrl
-            })
-
-            if (sendImage.error) {
-              await messenger.url(
-                filter.user,
-                Default.ERROR_SENDING_IMAGE,
-                memeUrl
-              );
-            }
+            // Let the Github Action run the Image Processing
+            await github.processImage({
+              userId: filter.user,
+              imageSrc,
+              imageDescription,
+              accessToken: process.env.MESSENGER_ACCESS_TOKEN
+            });
           }
           break;
         default:
-          jsonBox.clear(filter.user);
+          await jsonBox.clear(filter.user);
       }
 
       return res.status(200).send('EVENT_RECEIVED');
     });
   } else {
-    res.sendStatus(403);
+    return res.sendStatus(403);
   }
 });
 
@@ -112,12 +105,12 @@ app.get('/webhook', (req, res) => {
   if (mode && token) {
     if (mode === 'subscribe' && token === VERIFY_TOKEN) {
       console.log('Webhook Verified!');
-      res.status(200).send(challenge);
+      return res.status(200).send(challenge);
     } else {
-      res.sendStatus(403);
+      return res.sendStatus(403);
     }
   } else {
-    res.sendStatus(403);
+    return res.sendStatus(403);
   }
 });
 
