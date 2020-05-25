@@ -12,9 +12,9 @@ This project is inspired from [MemeServe](https://github.com/janjanmedinaaa/Meme
 - The **Webhook** stores the Image or Description received on [JSONBox](https://jsonbox.io/). Each user has their own unique `JSONBox` Storage. The Storage only stores 1 Pair of Image and Description.
 - When the Image and Description are already given, it triggers a Dispatch Event to [MemeServe Github Action](https://github.com/janjanmedinaaa/memeserve-action) to run the Image Processing
 - The **Github Action** handles the Image Processing so that the `Vercel` Link doesn't Timeout. It receives the Image and Description and creates the Templated Image.
-- After creating the Image, the Github Action will upload it the [File.IO](https://www.file.io/) for Messenger Retrieval. `File.IO` returns a One-Time Download URL.
+- After creating the Image, the Github Action will upload it to [File.IO](https://www.file.io/) for Messenger Retrieval. `File.IO` returns a One-Time Download URL.
 - The **Github Action** sends the Image to the `Messenger Platform`.
-- `Messenger` downloads the Image from `File.IO` Download URL and sends it the user. While `File.IO` automatically deletes it for security purposes.
+- `Messenger` downloads the Image from the `File.IO` Download URL and saves it to their Database and sends it the user. While `File.IO` automatically deletes it for security purposes.
 
 ## Libraries and Platforms
 - [Vercel](https://vercel.com) (Previously known as `Now`)
