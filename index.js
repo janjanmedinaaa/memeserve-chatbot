@@ -71,8 +71,6 @@ app.post('/', async(req, res) => {
               value: Default.EDITING_MESSAGE
             });
 
-            await messenger.action(filter.user, Default.TYPING);
-
             // Let the Github Action run the Image Processing
             await github.processImage({
               userId: filter.user,
