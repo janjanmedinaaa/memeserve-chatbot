@@ -6,7 +6,7 @@ const DISPATCH_EVENT = 'memeserve-image-process';
 const ACCESS_TOKEN = process.env.GITHUB_ACCESS_TOKEN;
 
 const processImage = (data) => {
-  fetch(BASE_URL, {
+  return fetch(BASE_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
