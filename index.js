@@ -13,7 +13,7 @@ const app = express().use(bodyParser.json());
 
 const filterEntry = (entry) => { 
   var user = entry.sender.id;
-  var type = (entry.message.text) ? 'text' : entry.message.attachments[0].type
+  var type = (entry.message.text != undefined) ? 'text' : entry.message.attachments[0].type || 'unknown'
   var value = entry.message.text || entry.message.attachments[0].payload.url
 
   return { user, type, value }
@@ -24,6 +24,7 @@ app.post('/', async(req, res) => {
   let body = req.body;
 
   console.log('Body Object', body.object);
+  console.log(JSON.stringify(body, null, 2));
   // Checks this is an event from a page subscription
   if (body.object === 'page') {
 
@@ -32,6 +33,32 @@ app.post('/', async(req, res) => {
 
       // Only get the first Message received
       let messages = entry.messaging[0];
+      
+      // Handle Get Started
+      if (messages.postback) {
+        var user = messages.sender.id
+        await messenger.action(user, Default.SEEN);
+        await messenger.action(user, Default.TYPING);
+        await messenger.send({
+          user,
+          type: 'text',
+          value: Default.GET_STARTED_INTRO
+        });
+        await messenger.action(user, Default.TYPING);
+        await messenger.send({
+          user,
+          type: 'text',
+          value: Default.GET_STARTED_INSTRUCTIONS
+        });
+        await messenger.action(user, Default.TYPING);
+        await messenger.send({
+          user,
+          type: 'text',
+          value: Default.GET_STARTED_ADDITIONAL
+        });
+        return res.status(200).send('EVENT_RECEIVED');
+      }
+
       let filter = filterEntry(messages);
 
       // Acknowledge the Message

@@ -11,6 +11,10 @@ const ERROR_SENDING_IMAGE = 'Look\'s like I can\'t send the image. I\'ll be send
 const TYPING = 'typing_on';
 const SEEN = 'mark_seen';
 
+const GET_STARTED_INTRO = 'Welcome to MemeServe, a Memes as a Service Platform integrated on Messenger.';
+const GET_STARTED_INSTRUCTIONS = 'You can Get Started by sending an Image or GIF first followed by the Description. You could also go either way!';
+const GET_STARTED_ADDITIONAL = 'You can also send a new Image or Message if you made an error on the previous one.';
+
 module.exports = {
   RECEIVED_IMAGE,
   RECEIVED_MESSAGE,
@@ -23,5 +27,9 @@ module.exports = {
   ERROR_SENDING_IMAGE,
 
   TYPING,
-  SEEN
+  SEEN,
+
+  GET_STARTED_INTRO,
+  GET_STARTED_INSTRUCTIONS,
+  GET_STARTED_ADDITIONAL
 }
